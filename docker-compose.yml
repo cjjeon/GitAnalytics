@@ -1,0 +1,5 @@
+version: "3.8"
+services:
+  git-scraper:
+    container_name: containers_scraper_1
+    build: "backend/."
