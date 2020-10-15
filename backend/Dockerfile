@@ -6,6 +6,8 @@ WORKDIR /usr/local/bin
 COPY ./requirements.txt ./requirements.txt
 RUN pip install -r requirements.txt
 
-COPY ./main.py ./main.py
+COPY . /backend
 
-CMD ["python", "main.py"]
+ENV PYTHONPATH "${PYTHONPATH}:/"
+
+CMD ["python", "/backend/main.py"]

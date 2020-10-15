@@ -575,7 +575,7 @@ SQLLAB_CTAS_NO_LIMIT = False
 
 # This allows you to define custom logic around the "CREATE TABLE AS" or CTAS feature
 # in SQL Lab that defines where the target schema should be for a given user.
-# Database `CTAS Schema` has a precedence over this setting.
+# Database `CTAS schema` has a precedence over this setting.
 # Example below returns a username and CTA queries will write tables into the schema
 # name `username`
 # SQLLAB_CTAS_SCHEMA_NAME_FUNC = lambda database, user, schema, sql: user.username

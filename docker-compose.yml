@@ -5,6 +5,10 @@ services:
     build: "backend/."
     volumes:
       - ./db:/usr/local/bin/db
+    environment:
+      - GIT_USERNAME=${GIT_USERNAME}
+      - GIT_PASSWORD=${GIT_PASSWORD}
+      - GIT_URL=${GIT_URL}
   superset:
     container_name: containers_superset_1
     build: "superset/."
