@@ -3,3 +3,14 @@ services:
   git-scraper:
     container_name: containers_scraper_1
     build: "backend/."
+    volumes:
+      - ./db:/usr/local/bin/db
+  superset:
+    container_name: containers_superset_1
+    build: "superset/."
+    ports:
+      - 8080:8080
+    volumes:
+      - ./db:/app/db
+    environment:
+      - PREVENT_UNSAFE_DB_CONNECTIONS=false
