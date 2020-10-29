@@ -12,12 +12,10 @@ class UserDAO:
             return False
         return True
 
-    def insert(self, repo_id: int, email: str, name: str) -> User:
+    def insert(self, repo_id: int, email: str, name: str):
         with get_session() as session:
             user = session.add(User(repo_id=repo_id, email=email, name=name))
             session.commit()
-
-        return user
 
     def get_by_email(self, repo_id: int, email: str) -> Optional[User]:
         with get_session() as session:

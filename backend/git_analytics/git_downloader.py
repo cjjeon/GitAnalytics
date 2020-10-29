@@ -71,11 +71,11 @@ class GitDownloader:
                 author = commit.author
 
                 if not self.user_dao.check_if_user_exists(author.email):
-                    user = self.user_dao.insert(repo_id=repo.id, email=author.email, name=author.name)
-                else:
-                    user = self.user_dao.get_by_email(repo_id=repo.id, email=author.email)
-                    if user is None:
-                        raise Exception("Unable to find the user from database")
+                    self.user_dao.insert(repo_id=repo.id, email=author.email, name=author.name)
+
+                user = self.user_dao.get_by_email(repo_id=repo.id, email=author.email)
+                if user is None:
+                    raise Exception("Unable to find the user from database")
 
                 self.commit_dao.insert(
                     repo_id=repo.id,
