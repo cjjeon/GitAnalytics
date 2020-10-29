@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
@@ -11,8 +12,11 @@ def create_database():
     Base.metadata.create_all(engine)
 
 
+@contextmanager
 def get_session():
     session_maker = sessionmaker(engine)
     session: Session = session_maker()
-    yield session
-    session.close()
+    try:
+        yield session
+    finally:
+        session.close()

@@ -9,6 +9,7 @@ services:
       - GIT_USERNAME=${GIT_USERNAME}
       - GIT_PASSWORD=${GIT_PASSWORD}
       - GIT_URL=${GIT_URL}
+      - GIT_PROJECT_NAME=${GIT_PROJECT_NAME}
   superset:
     container_name: containers_superset_1
     build: "superset/."
