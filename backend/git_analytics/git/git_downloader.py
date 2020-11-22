@@ -13,6 +13,10 @@ class CloneProgress(git.RemoteProgress):
 
 LOCAL_GIT_DIRECTORY = '/random/directory/'
 
+"""
+    This is not recommended use but still works. 
+"""
+
 class GitDownloader:
     def __init__(self, username: str, password: str, http_url: str, project_name: str):
         self._username = username
@@ -55,11 +59,11 @@ class GitDownloader:
         )
 
         # Add to the database
-        self.repo_dao.insert(self._username, self._password, self._http_url, self._project_name)
+        self.repo_dao.insert(self._http_url, self._project_name)
 
-    def fetch_latest_commit_info(self, max_count: int = 50):
+    def fetch_latest_commit_info(self, max_count: int = 50, branch_name: str = 'master'):
         git_repo = git.Repo(self.get_local_git_path())
-        commits = list(git_repo.iter_commits('master', max_count=max_count))
+        commits = list(git_repo.iter_commits(branch_name, max_count=max_count))
 
         repo = self.repo_dao.get_by_project_name(self._project_name)
         if repo is None:
@@ -70,20 +74,27 @@ class GitDownloader:
             if not self.commit_dao.check_if_commit_exists(commit.hexsha):
                 author = commit.author
 
-                if not self.user_dao.check_if_user_exists(author.email):
+                if not self.user_dao.check_if_user_exists(repo.id, author.email):
                     self.user_dao.insert(repo_id=repo.id, email=author.email, name=author.name)
 
                 user = self.user_dao.get_by_email(repo_id=repo.id, email=author.email)
                 if user is None:
                     raise Exception("Unable to find the user from database")
 
+
+                stats = commit.stats.total
+
                 self.commit_dao.insert(
                     repo_id=repo.id,
                     user_id=user.id,
+                    branch=branch_name,
                     summary=commit.summary,
                     message=commit.message,
                     hexsha=commit.hexsha,
                     is_merge=True if len(commit.parents) > 1 else False,
                     datetime=commit.committed_datetime,
+                    insertions=stats['insertions'] if 'insertions' in stats else None,
+                    deletions=stats['deletions'] if 'deletions' in stats else None,
+                    files=stats['files'] if 'files' in stats else None,
                 )
 

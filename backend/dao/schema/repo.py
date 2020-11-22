@@ -8,6 +8,4 @@ class Repo(Base):
 
     id = Column(Integer, primary_key=True)
     url = Column(String, nullable=False)
-    username = Column(String, nullable=False)
-    password = Column(String, nullable=False)
     project_name = Column(String, nullable=False)

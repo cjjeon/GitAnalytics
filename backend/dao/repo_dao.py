@@ -5,9 +5,9 @@ from backend.dao.create_engine import get_session
 
 
 class RepoDAO:
-    def insert(self, username: str, password: str, url: str, project_name: str) -> Repo:
+    def insert(self, url: str, project_name: str) -> Repo:
         with get_session() as session:
-            repo = session.add(Repo(username=username, password=password, url=url, project_name=project_name))
+            repo = session.add(Repo(url=url, project_name=project_name))
             session.commit()
 
         return repo
